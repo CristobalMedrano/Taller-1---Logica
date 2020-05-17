@@ -29,21 +29,48 @@ def add_pathology(disease, symptom):
     pathology = "pathology('"+disease+"','"+symptom+"')"
     p.assertz(pathology)
 
-def view_all_pathology():
+def show_all_pathology():
     for soln in p.query("pathology(Disease, Symptom)"):
         print("[Pathology] "+soln["Disease"]+": "+soln["Symptom"])
-# Query Example
-#testQuery = list(prolog.query('index("urticaria por frio","un empeoramiensto de la reaccion a medida que la piel se calienta")'))
-#if testQuery == []:
-#    print(False)
-#else:
-#    print(True)
+
+def check_response(query):
+    if query == []:
+        return False
+    else:
+        return True
+
+def disease_by_symptom(symptom):
+    query = "pathology(Disease,'"+symptom+"')"
+    prolog_query = list(p.query(query))
+    response = query_results(prolog_query)
+    return response
+
+def symptom_by_disease(disease):
+    query = "pathology('"+disease+"', Symptom)"
+    prolog_query = list(p.query(query))
+    response = query_results(prolog_query)
+    return response
+
+def is_pathology(disease, symptom):
+    query = "pathology('"+disease+"','"+symptom+"')"
+    response = list(p.query(query))
+    return check_response(response)
+
+def query_results(query_response):
+    name = get_query_name(query_response)
+    response = []
+    for res in query_response:
+        response.append(res[name])
+    return response
+
+def get_query_name(query_response):
+    return [*query_response[0]][0]
 
 def main():
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
-        #view_all_pathology()
-        print(True)
+        response = disease_by_symptom('fiebre')
+        print(response)
     else:
         print(False)
 main()
