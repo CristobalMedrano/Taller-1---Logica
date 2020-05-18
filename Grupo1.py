@@ -39,13 +39,13 @@ def check_response(query):
     else:
         return True
 
-def disease_by_symptom(symptom):
+def diseases_by_symptom(symptom):
     query = "pathology(Disease,'"+symptom+"')"
     prolog_query = list(p.query(query))
     response = query_results(prolog_query)
     return response
 
-def symptom_by_disease(disease):
+def symptoms_by_disease(disease):
     query = "pathology('"+disease+"', Symptom)"
     prolog_query = list(p.query(query))
     response = query_results(prolog_query)
@@ -69,7 +69,7 @@ def get_query_name(query_response):
 def main():
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
-        response = disease_by_symptom('fiebre')
+        response = diseases_by_symptom('fiebre')
         print(response)
     else:
         print(False)
