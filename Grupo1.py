@@ -33,28 +33,34 @@ def show_all_pathology():
     for soln in p.query("pathology(Disease, Symptom)"):
         print("[Pathology] "+soln["Disease"]+": "+soln["Symptom"])
 
-def check_response(query):
-    if query == []:
-        return False
-    else:
-        return True
+def is_pathology(disease, symptom):
+    query = "pathology('"+disease+"','"+symptom+"')"
+    response = list(p.query(query))
+    return is_valid_query(response)
 
 def diseases_by_symptom(symptom):
     query = "pathology(Disease,'"+symptom+"')"
-    prolog_query = list(p.query(query))
-    response = query_results(prolog_query)
+    response = prolog_query(query)
     return response
 
 def symptoms_by_disease(disease):
     query = "pathology('"+disease+"', Symptom)"
-    prolog_query = list(p.query(query))
-    response = query_results(prolog_query)
+    response = prolog_query(query)
     return response
 
-def is_pathology(disease, symptom):
-    query = "pathology('"+disease+"','"+symptom+"')"
-    response = list(p.query(query))
-    return check_response(response)
+def prolog_query(query):
+    p_query = list(p.query(query))
+    if is_valid_query(p_query):
+        response = query_results(p_query)
+    else:
+        response = []
+    return response
+
+def is_valid_query(query):
+    if query == []:
+        return False
+    else:
+        return True
 
 def query_results(query_response):
     name = get_query_name(query_response)
@@ -69,8 +75,9 @@ def get_query_name(query_response):
 def main():
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
-        response = diseases_by_symptom('fiebre')
-        print(response)
+        response = diseases_by_symptom('tos')
+        response_2 = diseases_by_symptom('tos2')
+        print(response, response_2)
     else:
         print(False)
 main()
