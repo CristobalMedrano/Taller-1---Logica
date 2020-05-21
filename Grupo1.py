@@ -114,6 +114,33 @@ def result_disease(query_response):
         print(query_response)
         return True
 
+#la funcion retorna el numero de sintomas que uno desea (number_symptoms) en base a una lista de enfermedades (diseases)
+def top_symptoms(number_symptoms,diseases):
+    symptoms = []
+    repetitions = []
+    top_symptoms_return = []
+    for disease in diseases:
+        symptoms += symptoms_by_disease(disease)
+    for symptom in symptoms:
+        repetitions.append(symptoms.count(symptom))
+    bubble_order(repetitions,symptoms)
+    for symptom in symptoms:
+        if top_symptoms_return.count(symptom) == 0:
+            top_symptoms_return.append(symptom)
+            if len(top_symptoms_return) == number_symptoms:
+                return top_symptoms_return
+
+def bubble_order(listRepetitions,listSymptoms):
+    for dato in range(len(listRepetitions)-1,0,-1):
+        for i in range(dato):
+            if listRepetitions[i]<listRepetitions[i+1]:
+                temp = listRepetitions[i]
+                temp2 = listSymptoms[i]
+                listRepetitions[i] = listRepetitions[i+1]
+                listSymptoms[i] = listSymptoms[i+1]
+                listRepetitions[i+1] = temp
+                listSymptoms[i+1] = temp2
+
 def main():
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
