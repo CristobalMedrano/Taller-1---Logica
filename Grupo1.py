@@ -102,6 +102,18 @@ def match(disease, symptoms):
     else:
         return False
 
+def result_disease(query_response):
+    if (len(query_response) > 3):
+        print("Aun existen muchas enfermedades, por favor siga seleccionando sintomas para tener un resultado mas exacto")
+        return False
+    elif (len(query_response) == 0):
+        print("Con los sintomas entregados no se encontro ninguna solucion, por favor vuelva a intentarlo")
+        return False
+    else:
+        print("Los sintomas encontrados son:")
+        print(query_response)
+        return True
+
 def main():
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
