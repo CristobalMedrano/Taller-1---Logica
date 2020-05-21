@@ -1,7 +1,9 @@
 from pyswip import Prolog, Query
 import os.path as path
 from collections import Counter
+from time import time
 
+global user_symptoms
 p = Prolog()
 
 def read_pathology_file(pathology_file):
@@ -33,6 +35,12 @@ def add_pathology(disease, symptom):
 def show_all_pathology():
     for soln in p.query("pathology(Disease, Symptom)"):
         print("[Pathology] "+soln["Disease"]+": "+soln["Symptom"])
+
+def get_all_pathology():
+    pathology = []
+    for soln in p.query("pathology(Disease, Symptom)"):
+        pathology.append(soln["Disease"])
+    return pathology
 
 def is_pathology(disease, symptom):
     query = "pathology('"+disease+"','"+symptom+"')"
@@ -102,8 +110,8 @@ def match(disease, symptoms):
     else:
         return False
 
-def result_disease(query_response):
-    if (len(query_response) > 3):
+def result_disease(query_response, top):
+    if (len(query_response) > top):
         print("Aun existen muchas enfermedades, por favor siga seleccionando sintomas para tener un resultado mas exacto")
         return False
     elif (len(query_response) == 0):
@@ -125,10 +133,11 @@ def top_symptoms(number_symptoms,diseases):
         repetitions.append(symptoms.count(symptom))
     bubble_order(repetitions,symptoms)
     for symptom in symptoms:
-        if top_symptoms_return.count(symptom) == 0:
+        if top_symptoms_return.count(symptom) == 0 and user_symptoms.count(symptom) == 0:
             top_symptoms_return.append(symptom)
             if len(top_symptoms_return) == number_symptoms:
                 return top_symptoms_return
+    return top_symptoms_return
 
 def bubble_order(listRepetitions,listSymptoms):
     for dato in range(len(listRepetitions)-1,0,-1):
@@ -142,11 +151,29 @@ def bubble_order(listRepetitions,listSymptoms):
                 listSymptoms[i+1] = temp2
 
 def main():
+    global user_symptoms
+    user_symptoms = ['fiebre', 'tos', 'mucosidad']
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
         # Ejemplo de codigo para encontrar una enfermedad.
-        response = symptoms_by_disease('faringitis')
-        print(diseases_by_symptoms(response))   #la funcion necesita una lista de sintomas como entrada y 
+        response = diseases_by_symptoms(['tos', 'fiebre', 'mucosidad', 'escalofrios'])
+        '''print(diseases_by_symptom('tos'))
+        print(diseases_by_symptom('fiebre'))
+        print()
+        print(top_symptoms(15, ['bronquitis', 'difteria', 'covid-19']))
+        print(symptoms_by_disease('bronquitis'))
+        print(symptoms_by_disease('difteria'))
+        print(symptoms_by_disease('covid-19'))'''
+        print(response )
+        start_time = time()
+        print(user_symptoms)
+        enfermedades = diseases_by_symptoms(user_symptoms)
+        print(enfermedades)
+        print(top_symptoms(5, enfermedades))
+        print(result_disease(enfermedades, 2))
+        elapsed_time = time() - start_time
+        print("Elapsed time: %.10f seconds." % elapsed_time)
+           #la funcion necesita una lista de sintomas como entrada y 
                                                 # retorna una lista de enfermedades que comparten esos sintomas.
         # fin del ejemplo
     else:
