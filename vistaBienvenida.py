@@ -33,7 +33,7 @@ label_title.config(font=(28))
 label_description = tkinter.Label(text="Hola, soy un sistema de asesoramiento que simula un diagnostico medico, \npara esto necesito que selecciones los sintomas que presenta el paciente \npara determinar la posible afeccion medica.")
 label_description.place(x=80, y=70)
 
-label_information = tkinter.Label(text="INFORMACION IMPORTANTE: \nLogic Doctor App tiene un fin exclusivamente informativo, si el paciente \ncree que los sintomas son graves debe recurrir a su medico mas cercano.")
+label_information = tkinter.Label(text="INFORMACION IMPORTANTE: \nLogic Doctor App NO RECOMIENDA SU USO PARA FINES PROFESIONALES,\n esta App se creó con fines estudiantiles y en ningún caso\n deben tomarse en cuenta los resultados obtenidos aquí.")
 label_information.place(x=80, y=140)
 
 label_collaborators = tkinter.Label(text="Autores: \n - Jorge Ayala\n - Felipe Gonzalez\n - Cristobal Medrano\n - Javier Perez")

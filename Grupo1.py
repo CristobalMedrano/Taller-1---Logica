@@ -5,7 +5,7 @@ from time import time
 import tkinter as tk
 import random
 
-global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms
+global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms
 p = Prolog()
 
 class HoverButton(tk.Button):
@@ -188,12 +188,18 @@ def hola(symptom):
     print(top_symptoms_2(10, diseases_by_symptoms(user_symptoms)))
     #print(diseases_by_symptoms(user_symptoms))
 
+def update_lbl_current_symptoms(symptom):
+    global lbl_current_symptoms
+    lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+ "\n" + symptom.capitalize() + "\n"
+
 def toggleText(btn):
     symptom = btn['text'].lower()
     global user_symptoms
     if not symptom in user_symptoms:
         user_symptoms.append(symptom)
     
+    update_lbl_current_symptoms(symptom)
+
     i = 0
     sintomas_restantes = top_symptoms_2(10, diseases_by_symptoms(user_symptoms))
     largo_del_arreglo = len(sintomas_restantes)
@@ -254,7 +260,7 @@ def update():
 def main():
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
-        global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms
+        global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms
         user_symptoms = []
         
         start_time = time()
@@ -280,10 +286,10 @@ def main():
         window.resizable(False, False)
         user_frame = tk.Frame(master=window, width=1200, height=100, bg="blue")
         menu_frame = tk.Frame(master=window, width=1200, height=50, bg="green")
-        user_top_symptoms = tk.Frame(master=window, width=400, height=620, bg="white")
+        user_current_symptoms = tk.Frame(master=window, width=400, height=620, bg="white")
         aux_frame = tk.Frame(master=window, width=1, bg="black")
+        user_top_symptoms = tk.Frame(master=window, width=400, bg="white")
         aux_frame_2 = tk.Frame(master=window, width=1, bg="black")
-        user_current_symptoms = tk.Frame(master=window, width=400, bg="white")
         frame3 = tk.Frame(master=window, width=400, bg="white")
 
         lbl_init_symptoms = tk.Label(
@@ -313,15 +319,21 @@ def main():
             btn_top_symptoms_list.append(btn_top_symptom)
             i += 1
         
+        lbl_current_symptoms = tk.Label(
+            master=user_current_symptoms,
+            text="Sintomas ingresados:\n",
+            bg="white",
+            font=("Arial", 14)
+        )
+        lbl_current_symptoms.grid(row=0, column=0, padx=20, pady=10)
 
-        #cambiar el nombre de los botones
-        #btn_top_symptom["text"] = "algo"
+        #lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+"hola amigos"
 
         user_frame.pack(fill=tk.X, side=tk.TOP)
         menu_frame.pack(fill=tk.X, side=tk.BOTTOM)
-        user_top_symptoms.pack(fill=tk.BOTH, side=tk.LEFT, expand=True,  pady=10)
+        user_current_symptoms.pack(fill=tk.BOTH, side=tk.LEFT, expand=True, pady=10)
         aux_frame.pack(fill=tk.Y, side=tk.LEFT, expand=True, pady=15 ,padx=0.1)
-        user_current_symptoms.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+        user_top_symptoms.pack(fill=tk.BOTH, side=tk.LEFT, expand=True,  pady=10)
         aux_frame_2.pack(fill=tk.Y, side=tk.LEFT, expand=True, pady=15 ,padx=0.1)
         frame3.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
 
