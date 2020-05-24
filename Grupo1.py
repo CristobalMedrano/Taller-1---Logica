@@ -6,7 +6,7 @@ from tkinter import messagebox
 import tkinter as tk
 import random
 
-global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, text_name, main_window
+global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, text_name, main_window, lbl_possible_disease
 p = Prolog()
 
 class HoverButton(tk.Button):
@@ -193,13 +193,16 @@ def update_lbl_current_symptoms(symptom):
     global lbl_current_symptoms
     lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+ "\n" + symptom.capitalize() + "\n"
 
-def update_btn_symptoms(top):
+def update_btn_symptoms(top,finish):
     print(diseases_by_symptoms(user_symptoms))
     i = 0
     remaining_symptoms = top_symptoms_2(top, diseases_by_symptoms(user_symptoms))
     for nombre in remaining_symptoms:
         btn_top_symptoms_list[i]["text"] = nombre.capitalize()
         i += 1
+
+    if finish == 1:
+        i = 0 
 
     while i < (top):
         btn_top_symptoms_list[i]["text"] = ""
@@ -208,18 +211,30 @@ def update_btn_symptoms(top):
         btn_top_symptoms_list[i]["bd"] = "0"
         i += 1
 
-def btn_symptom_action(btn, top):
+def btn_symptom_action(btn, top,label,tk):
+    finish = 0
     symptom = btn['text'].lower()
     global user_symptoms
     if not symptom in user_symptoms:
         user_symptoms.append(symptom)
-    
+
+    if result_disease(diseases_by_symptoms(user_symptoms),1):
+            lbl_possible_disease = tk.Label(
+                master=label,
+                text="Posible enfermedad:\n \n"+ diseases_by_symptoms(user_symptoms)[0],
+                bg="white",
+                font=("Arial", 14)
+            )
+            lbl_possible_disease.grid(row=0, column=0, padx=20, pady=10)
+            messagebox.showerror(title="DIAGNOSTICO", message= "Estos sintomas pueden ser de "+ diseases_by_symptoms(user_symptoms)[0])
+            finish = 1
+
     update_lbl_current_symptoms(symptom)
-    update_btn_symptoms(top)
+    update_btn_symptoms(top,finish)
 
 def start_program(init_top_symptoms, top_number):
     if(text_name.get() != ""):
-        global btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms
+        global btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, lbl_possible_disease
         name_user = text_name.get()
         #new_window = tkinter.Toplevel(main_window)
         window = tk.Tk(className='Taller 1 - Dr LPO')
@@ -232,7 +247,7 @@ def start_program(init_top_symptoms, top_number):
         aux_frame = tk.Frame(master=window, width=1, bg="black")
         user_top_symptoms = tk.Frame(master=window, width=400, bg="white")
         aux_frame_2 = tk.Frame(master=window, width=1, bg="black")
-        final_disease = tk.Frame(master=window, width=400, bg="white")
+        user_frame_disease = tk.Frame(master=window, width=400, bg="white")
 
         lbl_user_name = tk.Label(
             master=user_frame,
@@ -266,7 +281,7 @@ def start_program(init_top_symptoms, top_number):
                 state=tk.NORMAL,
                 width=30
             )
-            btn_top_symptom["command"] = lambda btn=btn_top_symptom: btn_symptom_action(btn, top_number)
+            btn_top_symptom["command"] = lambda btn=btn_top_symptom, label=user_frame_disease,tk=tk: btn_symptom_action(btn,top_number,label,tk)
             btn_top_symptom.grid(row=i, column=0, padx=10, pady=5)
             btn_top_symptoms_list.append(btn_top_symptom)
             i += 1
@@ -279,6 +294,14 @@ def start_program(init_top_symptoms, top_number):
         )
         lbl_current_symptoms.grid(row=0, column=0, padx=20, pady=10)
 
+        lbl_possible_disease = tk.Label(
+            master=user_frame_disease,
+            text="Posible enfermedad:",
+            bg="white",
+            font=("Arial", 14)
+        )
+        lbl_possible_disease.grid(row=0, column=0, padx=20, pady=10)
+
         btn_exit = tk.Button(master=exit_program, text="Salir", bg="white", font=("Arial", 14), width=10, command= lambda x=window :window.destroy())
         btn_exit.place(x=1075, y=5)
         #lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+"hola amigos"
@@ -289,7 +312,8 @@ def start_program(init_top_symptoms, top_number):
         aux_frame.pack(fill=tk.Y, side=tk.LEFT, expand=True, pady=15 ,padx=0.1)
         user_top_symptoms.pack(fill=tk.BOTH, side=tk.LEFT, expand=True,  pady=10)
         aux_frame_2.pack(fill=tk.Y, side=tk.LEFT, expand=True, pady=15 ,padx=0.1)
-        final_disease.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+        user_frame_disease.pack(fill=tk.BOTH, side=tk.LEFT, expand=True, pady=10)
+
 
         window.mainloop()
         
