@@ -2,10 +2,11 @@ from pyswip import Prolog, Query
 import os.path as path
 from collections import Counter
 from time import time
+from tkinter import messagebox
 import tkinter as tk
 import random
 
-global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms
+global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, text_name, main_window
 p = Prolog()
 
 class HoverButton(tk.Button):
@@ -192,75 +193,113 @@ def update_lbl_current_symptoms(symptom):
     global lbl_current_symptoms
     lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+ "\n" + symptom.capitalize() + "\n"
 
-def toggleText(btn):
+def update_btn_symptoms(top):
+    print(diseases_by_symptoms(user_symptoms))
+    i = 0
+    remaining_symptoms = top_symptoms_2(top, diseases_by_symptoms(user_symptoms))
+    for nombre in remaining_symptoms:
+        btn_top_symptoms_list[i]["text"] = nombre.capitalize()
+        i += 1
+
+    while i < (top):
+        btn_top_symptoms_list[i]["text"] = ""
+        btn_top_symptoms_list[i]["state"] = tk.DISABLED
+        btn_top_symptoms_list[i]["bg"] = "white"
+        btn_top_symptoms_list[i]["bd"] = "0"
+        i += 1
+
+def btn_symptom_action(btn, top):
     symptom = btn['text'].lower()
     global user_symptoms
     if not symptom in user_symptoms:
         user_symptoms.append(symptom)
     
     update_lbl_current_symptoms(symptom)
+    update_btn_symptoms(top)
 
-    i = 0
-    sintomas_restantes = top_symptoms_2(10, diseases_by_symptoms(user_symptoms))
-    largo_del_arreglo = len(sintomas_restantes)
-    print(diseases_by_symptoms(user_symptoms))
-    for nombre in sintomas_restantes:
-        btn_top_symptoms_list[i]["text"] = nombre.capitalize()
-        #btn_top_symptoms_list[i]["text"] = str(i)
-        i += 1
+def start_program(init_top_symptoms, top_number):
+    if(text_name.get() != ""):
+        global btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms
+        name_user = text_name.get()
+        #new_window = tkinter.Toplevel(main_window)
+        window = tk.Tk(className='Taller 1 - Dr LPO')
+        main_window.destroy()
+        window.configure(bg="white")
+        window.resizable(False, False)
+        user_frame = tk.Frame(master=window, width=1200, height=100, bg="#7ac5cd")
+        exit_program = tk.Frame(master=window, width=1200, height=50, bg="#7ac5cd")
+        user_current_symptoms = tk.Frame(master=window, width=400, height=620, bg="white")
+        aux_frame = tk.Frame(master=window, width=1, bg="black")
+        user_top_symptoms = tk.Frame(master=window, width=400, bg="white")
+        aux_frame_2 = tk.Frame(master=window, width=1, bg="black")
+        final_disease = tk.Frame(master=window, width=400, bg="white")
 
-    while i < (10):
-        btn_top_symptoms_list[i]["text"] = ""
-        btn_top_symptoms_list[i]["state"] = tk.DISABLED
-        btn_top_symptoms_list[i]["bg"] = "white"
-        i += 1
-
-'''
-from tkinter import *destroy
-
-root = Tk()
-
-b = Button(root, text="Delete me", command=b.forget)
-b.pack()
-
-b['command'] = b.forget
-
-root.mainloop()
-'''
-
-def list_button(init_top_symptoms, user_top_symptoms, window):
-    i = 1
-    for symptom in init_top_symptoms:
-        btn_top_symptom = tk.Button(
-            master=user_top_symptoms,
-            text=symptom.capitalize(),
-            font=("Arial", 14),
-            bd=0,
+        lbl_user_name = tk.Label(
+            master=user_frame,
+            text="Paciente: "+name_user,
+            bd=2,
             fg="white",
-            bg="#7ac5cd",
-            activebackground="#619da4",
-            state=DISABLED,
-            width=30
+            bg="#7ac5cd", 
+            font=("Arial", 14)
+            )
+        lbl_user_name.grid(row=0, column=0, padx=20, pady=10)
+
+        lbl_init_symptoms = tk.Label(
+            master=user_top_symptoms,
+            text="¿Presenta alguno de estos síntomas?",
+            bg="white",
+            font=("Arial", 14)
         )
-        btn_top_symptom["command"] = lambda btn=btn_top_symptom: toggleText(btn, window)
-        btn_top_symptom.config(cursor='hand2 blue blue') # phew!
-        btn_top_symptom.grid(row=i, column=0, padx=10, pady=5)
-        i += 1
+        lbl_init_symptoms.grid(row=0, column=0, padx=20, pady=10)
 
-def update():
-    l.config(text=str(random.random()))
-    root.after(1000, update)
+        btn_top_symptoms_list = []
+        i = 1
+        for symptom in init_top_symptoms:
 
-#root = tk.Tk()
-#l = tk.Label(text='0')
-#l.pack()
-#root.after(1000, update)
-#root.mainloop()
+            btn_top_symptom = tk.Button(
+                master=user_top_symptoms,
+                text=symptom.capitalize(),
+                font=("Arial", 14),
+                bd=2,
+                fg="white",
+                bg="#7ac5cd",
+                state=tk.NORMAL,
+                width=30
+            )
+            btn_top_symptom["command"] = lambda btn=btn_top_symptom: btn_symptom_action(btn, top_number)
+            btn_top_symptom.grid(row=i, column=0, padx=10, pady=5)
+            btn_top_symptoms_list.append(btn_top_symptom)
+            i += 1
+        
+        lbl_current_symptoms = tk.Label(
+            master=user_current_symptoms,
+            text="Sintomas ingresados:\n",
+            bg="white",
+            font=("Arial", 14)
+        )
+        lbl_current_symptoms.grid(row=0, column=0, padx=20, pady=10)
+
+        btn_exit = tk.Button(master=exit_program, text="Salir", bg="white", font=("Arial", 14), width=10, command= lambda x=window :window.destroy())
+        btn_exit.place(x=1075, y=5)
+        #lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+"hola amigos"
+
+        user_frame.pack(fill=tk.X, side=tk.TOP)
+        exit_program.pack(fill=tk.X, side=tk.BOTTOM)
+        user_current_symptoms.pack(fill=tk.BOTH, side=tk.LEFT, expand=True, pady=10)
+        aux_frame.pack(fill=tk.Y, side=tk.LEFT, expand=True, pady=15 ,padx=0.1)
+        user_top_symptoms.pack(fill=tk.BOTH, side=tk.LEFT, expand=True,  pady=10)
+        aux_frame_2.pack(fill=tk.Y, side=tk.LEFT, expand=True, pady=15 ,padx=0.1)
+        final_disease.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+
+        window.mainloop()
+        
+    else:
+        messagebox.showerror(title="Error", message= "Debes ingresar el nombre del paciente antes de continuar")
 
 def main():
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
-        global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms
+        global user_symptoms, text_name, main_window
         user_symptoms = []
         
         start_time = time()
@@ -281,63 +320,39 @@ def main():
         else:
             init_top_symptoms = top_symptoms_2(top_number, diseases_by_symptoms(user_symptoms))
 
-        window = tk.Tk(className='Taller 1 - Dr LPO')
-        window.configure(bg="white")
-        window.resizable(False, False)
-        user_frame = tk.Frame(master=window, width=1200, height=100, bg="blue")
-        menu_frame = tk.Frame(master=window, width=1200, height=50, bg="green")
-        user_current_symptoms = tk.Frame(master=window, width=400, height=620, bg="white")
-        aux_frame = tk.Frame(master=window, width=1, bg="black")
-        user_top_symptoms = tk.Frame(master=window, width=400, bg="white")
-        aux_frame_2 = tk.Frame(master=window, width=1, bg="black")
-        frame3 = tk.Frame(master=window, width=400, bg="white")
+        main_window=tk.Tk()
 
-        lbl_init_symptoms = tk.Label(
-            master=user_top_symptoms,
-            text="¿Presenta alguno de estos síntomas?",
-            bg="white",
-            font=("Arial", 14)
-        )
-        lbl_init_symptoms.grid(row=0, column=0, padx=20, pady=10)
+        name_user = ""
 
-        btn_top_symptoms_list = []
-        i = 1
-        for symptom in init_top_symptoms:
+        main_window.title("LogicDoctor")
+        main_window.geometry("800x600")
+        main_window.resizable(width=False, height=False)
+        photo= tk.PhotoImage(file="fondo.png")
+        label_photo = tk.Label(main_window, image=photo).place(x=0,y=0)
+                
+        label_title = tk.Label(main_window,text="Logic Doctor App", bg="white", font=("Arial", 28))
+        label_title.place(x=400, y=20)
 
-            btn_top_symptom = tk.Button(
-                master=user_top_symptoms,
-                text=symptom.capitalize(),
-                font=("Arial", 14),
-                bd=0,
-                fg="white",
-                bg="#7ac5cd",
-                state=tk.NORMAL,
-                width=30
-            )
-            btn_top_symptom["command"] = lambda btn=btn_top_symptom: toggleText(btn)
-            btn_top_symptom.grid(row=i, column=0, padx=10, pady=5)
-            btn_top_symptoms_list.append(btn_top_symptom)
-            i += 1
-        
-        lbl_current_symptoms = tk.Label(
-            master=user_current_symptoms,
-            text="Sintomas ingresados:\n",
-            bg="white",
-            font=("Arial", 14)
-        )
-        lbl_current_symptoms.grid(row=0, column=0, padx=20, pady=10)
+        label_description = tk.Label(text="Hola, soy un sistema de asesoramiento que simula un\n diagnostico medico, para esto\n necesito que selecciones\n los sintomas que presenta el paciente \npara determinar la posible afección médica.", font=("Arial", 14), bg="#fcfbfb")
+        label_description.place(x=320, y=80)
 
-        #lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+"hola amigos"
+        label_information = tk.Label(text="INFORMACION IMPORTANTE: \nLogic Doctor App NO RECOMIENDA SU USO PARA \nFINES PROFESIONALES, esta App se creó\n con fines estudiantiles y en ningún caso deben\n tomarse en cuenta los resultados obtenidos aquí.", font=("Arial", 14), bg="#fcfbfb")
+        label_information.place(x=320, y=220)
 
-        user_frame.pack(fill=tk.X, side=tk.TOP)
-        menu_frame.pack(fill=tk.X, side=tk.BOTTOM)
-        user_current_symptoms.pack(fill=tk.BOTH, side=tk.LEFT, expand=True, pady=10)
-        aux_frame.pack(fill=tk.Y, side=tk.LEFT, expand=True, pady=15 ,padx=0.1)
-        user_top_symptoms.pack(fill=tk.BOTH, side=tk.LEFT, expand=True,  pady=10)
-        aux_frame_2.pack(fill=tk.Y, side=tk.LEFT, expand=True, pady=15 ,padx=0.1)
-        frame3.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+        label_collaborators = tk.Label(text="Desarrollado por: \n - Jorge Ayala\n - Felipe Gonzalez\n - Cristobal Medrano\n - Javier Perez", font=("Arial", 14), bg="#fefefe")
+        label_collaborators.place(x=30, y=460)
 
-        window.mainloop()
+        label_collaborators = tk.Label(text="Para continuar, ingrese el nombre del paciente.", font=("Arial", 14), bg="#fcfcfc")
+        label_collaborators.place(x=350, y=500)
+
+        text_name = tk.Entry(main_window, width=40)
+        text_name.place(x=400, y=540)
+
+        button_begin = tk.Button(text="Comenzar",font=("Arial", 14), width=10, command = lambda init=init_top_symptoms:  start_program(init_top_symptoms, top_number))
+        button_begin.place(x=650, y=540)
+
+        main_window.mainloop()
+
         '''
         # Ejemplo de codigo para encontrar una enfermedad.
         response = diseases_by_symptoms(['tos', 'fiebre', 'mucosidad', 'escalofrios'])
