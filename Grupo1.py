@@ -11,7 +11,7 @@ import tkinter as tk
 import random
 
 #### DEFINICIÓN DE CONSTANTES Y VARIABLES GLOBALES.
-global  user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, text_name, main_window, lbl_possible_disease, user_frame_disease, user_top_symptoms, btn_no_symptoms
+global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, text_name, main_window, lbl_possible_disease, user_frame_disease, user_top_symptoms, btn_no_symptoms
 p = Prolog()
 
 #### DEFINICIÓN DE FUNCIONES Y CLASES.
@@ -442,6 +442,11 @@ def start_program(init_top_symptoms, top):
     else:
         messagebox.showerror(title="Error", message= "Debes ingresar el nombre del paciente antes de continuar", parent="")
 
+# Función que permite realizar toda la lógica del programa.
+# Realiza la construcción de la vista principal y se encarga de realizar las consultas a la base de conociemiento.
+# Muestra, mediante la vista, la respuesta al usuario en caso de encontrar una enfermedad que contemple los sintomas ingresados.
+# Entrada: Vacía.
+# Salida: Vacía.
 def main():
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
