@@ -2,21 +2,22 @@
 
 #### IMPORTACIÓN DE FUNCIONES Y LIBRERÍAS.
 
-from pyswip import Prolog, Query
-import os.path as path
-from collections import Counter
-from time import time
-from tkinter import messagebox
 import tkinter as tk
-import random
+import os.path as path
+from tkinter import messagebox
+from pyswip import Prolog, Query
+from collections import Counter
 
 #### DEFINICIÓN DE CONSTANTES Y VARIABLES GLOBALES.
-global  user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, text_name, main_window, lbl_possible_disease, user_frame_disease, user_top_symptoms, btn_no_symptoms
+global user_symptoms, btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, text_name, main_window, lbl_possible_disease, user_frame_disease, user_top_symptoms, btn_no_symptoms
 p = Prolog()
 
 #### DEFINICIÓN DE FUNCIONES Y CLASES.
 
 
+# Función auxiliar para la librería tkinter, que permite mostrar un scroll no nativo por pantalla.
+# (Tkinter no posee nativamente un scroll para una lista de botones)
+# Obtenido de https://stackoverflow.com/questions/31762698/dynamic-button-with-scrollbar-in-tkinter-python
 class VerticalScrolledFrame(tk.Frame):
     """A pure Tkinter scrollable frame that actually works!
 
@@ -61,19 +62,6 @@ class VerticalScrolledFrame(tk.Frame):
                 # update the inner frame's width to fill the canvas
                 canvas.itemconfigure(interior_id, width=canvas.winfo_width())
         canvas.bind('<Configure>', _configure_canvas)
-
-class HoverButton(tk.Button):
-    def __init__(self, master, **kw):
-        tk.Button.__init__(self,master=master,**kw)
-        self.defaultBackground = self["background"]
-        self.bind("<Enter>", self.on_enter)
-        self.bind("<Leave>", self.on_leave)
-
-    def on_enter(self, e):
-        self['background'] = self['activebackground']
-
-    def on_leave(self, e):
-        self['background'] = self.defaultBackground
 
 # Función que permite leer el archivo de texto pathology_file y cargar su contenido en una base de conocimiento.
 # Entrada: String con el nombre del archivo de texto a cargar.
@@ -232,11 +220,11 @@ def match(disease, symptoms):
 # Salida: Bool. True o False, dependiendo si el usuario ha cumplido la condición necesaria par terminar el programa.
 def result_disease(query_response, top):
     if (len(query_response) > top):
-        print("Aun existen muchas enfermedades, por favor siga seleccionando sintomas para tener un resultado mas exacto")
+        #print("Aun existen muchas enfermedades, por favor siga seleccionando sintomas para tener un resultado mas exacto")
         return False
     else:
-        print("Los sintomas encontrados son:")
-        print(query_response)
+        #print("Los sintomas encontrados son:")
+        #print(query_response)
         return True
  
 # Predicado que dado una lista de enfermedades y una cantidad N, permite obtener los N sintomas más comunes entre las enfermedades de entrada.
@@ -264,6 +252,9 @@ def symptom_filter(number_symptoms, symptoms):
 def get_counter_names(counter_common):
     return list(map(lambda name: name[0], counter_common))
 
+# Predicado que permite obtener una lista de sintomas, donde su condición de filtrado es que se encuentren en al menos 10 enfemerdades.
+# Entrada: Lista de String con las enfermedades a analizar.
+# Salida: Lista de String con los sintomas filtrados.
 def top_symptoms_3(diseases):
     all_symptoms = []
     for disease in diseases:
@@ -273,6 +264,10 @@ def top_symptoms_3(diseases):
     symptoms = symptom_filter_3(all_symptoms)
     return symptoms
 
+# Función que permite filtrar resultados a partir de una lista de sintomas repetidos. Cuenta cada sintoma y selecciona los que presenten al menos
+# 10 cooincidencias por cada enfermedad en la base de conocimientos.
+# Entrada: Lista de String con los sintomas repetidos.
+# Salida: Lista de String con los nombres de los sintomas sin repetir mas comunes que cumplen la condición.
 def symptom_filter_3(symptoms):
     common_symptoms = list(filter( lambda symptom: symptom[1] >= 10, Counter(symptoms).most_common()))
     return get_counter_names(common_symptoms)
@@ -284,26 +279,23 @@ def update_lbl_current_symptoms(symptom):
     global lbl_current_symptoms
     lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+ "\n" + symptom.capitalize() + "\n"
 
-def update_lbl_current_symptoms(symptom):
-    global lbl_current_symptoms
-    lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+ "\n" + symptom.capitalize() + "\n"
 
+# Función que permite actualizar, en la vista principal, los botones actuales que puede seleccionar el usuario con los distintos sintomas que puede tener.
+# Entrada: Lista de botones con los sintomas
+# Salida: Lista actualizada de botones
 def update_btn_symptoms():
-    print(diseases_by_symptoms(user_symptoms))
     i = 0
     remaining_symptoms = top_symptoms_2(top, diseases_by_symptoms(user_symptoms))
-    print(remaining_symptoms)
     for nombre in remaining_symptoms:
         btn_top_symptoms_list[i]["text"] = nombre.capitalize()
         i += 1
     while i < top:
         btn_top_symptoms_list[i].destroy()
-        '''btn_top_symptoms_list[i]["text"] = ""
-        btn_top_symptoms_list[i]["state"] = tk.DISABLED
-        btn_top_symptoms_list[i]["bg"] = "white"
-        btn_top_symptoms_list[i]["bd"] = "0"'''
         i += 1
 
+# Esta función se encarga de mostrar por medio de una etiqueta, la o las enfermedades asociadas a una serie de sintomas que ingresó el usuario.
+# Entrada: No posee. Las variables requeridas por la interfaz gráfica, se encuentran de manera global.
+# Salida: No posee.
 def lbl_end_disease():
     diseases = diseases_by_symptoms(user_symptoms)
     if len(diseases) > 1:
@@ -326,6 +318,9 @@ def lbl_end_disease():
         messagebox.showinfo(title="DIAGNOSTICO", message= "Los sintomas ingresados pueden ser de "+ diseases[0], parent=user_frame_disease)
     btn_no_symptoms["state"] = tk.DISABLED
 
+# Función que se ejecuta cada vez que el usuario hace clic en algún sintoma. Se encarga de checkear los sintomas ingresados y de mostrar nuevos sintomas.
+# Entrada: Boton seleccionado, donde viene el sintoma del usuario.
+# Salida: No posee.
 def btn_symptom_action(btn):
     global user_symptoms, top
     symptom = btn['text'].lower()
@@ -342,12 +337,14 @@ def btn_symptom_action(btn):
         lbl_end_disease()
     else:
         lbl_init_symptoms["text"] = "Necesito más síntomas para \nhacer el diagnóstico.\n ¿Presenta alguno de estos síntomas?"
-        
+
+# Ventana principal del programa, en esta ventana se seleccionan los sintomas y se realiza la lógica para detectar si una serie de sintomas pertenece a una enfermedad.
+# Entrada: Una lista con los sintomas iniciales, se consideran acá los sintomas que estén presentes en al menos 10 enfermedades. top: la cantidad de sintomas a mostrar.
+# Salida: No posee.
 def start_program(init_top_symptoms, top):
     if(text_name.get() != ""):
         global btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, lbl_possible_disease, window, main_window, user_frame_disease, user_top_symptoms, btn_no_symptoms
         name_user = text_name.get()
-        #new_window = tkinter.Toplevel(main_window)
         window = tk.Tk(className='Taller 1 - Dr LPO')
 
         main_window.destroy()
@@ -364,8 +361,6 @@ def start_program(init_top_symptoms, top):
 
         scframe = VerticalScrolledFrame(user_top_symptoms)
         scframe.pack()
-        #scrollbar = Scrollbar(root)
-        #scrollbar.pack( side = RIGHT, fill = Y )
 
         lbl_user_name = tk.Label(
             master=user_frame,
@@ -376,8 +371,6 @@ def start_program(init_top_symptoms, top):
             font=("Arial", 14)
             )
         lbl_user_name.grid(row=0, column=0, padx=20, pady=10)
-
-
 
         lbl_init_symptoms = tk.Label(
             master=scframe.interior,
@@ -426,7 +419,6 @@ def start_program(init_top_symptoms, top):
         btn_exit.place(x=1075, y=5)
         btn_no_symptoms = tk.Button(master=exit_program, state=tk.DISABLED, text="No, no presento más sintomas", bg="white", font=("Arial", 14), width=30, command= lambda x=1 :lbl_end_disease())
         btn_no_symptoms.place(x=20, y=5)
-        #lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+"hola amigos"
 
         user_frame.pack(fill=tk.X, side=tk.TOP)
         exit_program.pack(fill=tk.X, side=tk.BOTTOM)
@@ -440,28 +432,26 @@ def start_program(init_top_symptoms, top):
         window.mainloop()
         
     else:
-        messagebox.showerror(title="Error", message= "Debes ingresar el nombre del paciente antes de continuar", parent="")
+        messagebox.showerror(title="Error", message= "Debes ingresar el nombre del paciente antes de continuar")
 
+# Función que permite realizar toda la lógica del programa.
+# Realiza la construcción de la vista principal y se encarga de realizar las consultas a la base de conociemiento.
+# Muestra, mediante la vista, la respuesta al usuario en caso de encontrar una enfermedad que contemple los sintomas ingresados.
+# Entrada: Vacía.
+# Salida: Vacía.
 def main():
     read_file = read_pathology_file("pathology.txt")
     if read_file is True:
         global user_symptoms, text_name, main_window, top
+        
         user_symptoms = []
-        start_time = time()
         all_diseases = get_all_disease()
-        elapsed_time = time() - start_time
-        print("Elapsed time: %.10f seconds." % elapsed_time)
-        #print(top_symptoms(10, all_diseases))
-        #elapsed_time = time() - start_time - elapsed_time
-        #print("Elapsed time: %.10f seconds." % elapsed_time)
-        #print(top_symptoms_2(175, all_diseases))
-        elapsed_time = time() - start_time - elapsed_time
-        print("Elapsed time: %.10f seconds." % elapsed_time)
 
         # Top symptoms
         top = len(top_symptoms_3(all_diseases))
         init_top_symptoms = top_symptoms_2(top, all_diseases)
 
+        # Creación de la vista principal.
         main_window=tk.Tk()
 
         name_user = ""
@@ -494,31 +484,8 @@ def main():
         button_begin.place(x=650, y=540)
 
         main_window.mainloop()
-
-        '''
-        # Ejemplo de codigo para encontrar una enfermedad.
-        response = diseases_by_symptoms(['tos', 'fiebre', 'mucosidad', 'escalofrios'])
-        print(diseases_by_symptom('tos'))
-        print(diseases_by_symptom('fiebre'))
-        print()
-        print(top_symptoms(15, ['bronquitis', 'difteria', 'covid-19']))
-        print(symptoms_by_disease('bronquitis'))
-        print(symptoms_by_disease('difteria'))
-        print(symptoms_by_disease('covid-19'))
-        print(response )
-        start_time = time()
-        print(user_symptoms)
-        enfermedades = diseases_by_symptoms(user_symptoms)
-        print(enfermedades)
-        print(top_symptoms(5, enfermedades))
-        print(result_disease(enfermedades, 2))
-        elapsed_time = time() - start_time
-        print("Elapsed time: %.10f seconds." % elapsed_time)
-           #la funcion necesita una lista de sintomas como entrada y 
-                                                # retorna una lista de enfermedades que comparten esos sintomas.
-        # fin del ejemplo'''
     else:
-        print(False)
+        print("Error al abrir el archivo de patologías.")
 
 ####### BLOQUE PRINCIPAL #######
 
