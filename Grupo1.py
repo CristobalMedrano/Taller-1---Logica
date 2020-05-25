@@ -305,7 +305,6 @@ def btn_symptom_action(btn):
         update_lbl_current_symptoms(symptom)
     update_btn_symptoms()
     top = len(top_symptoms_2(top, diseases_by_symptoms(user_symptoms)))
-    print('La cantidad de botones que hay son:'+str(togp))
     if btn_no_symptoms["state"] == tk.DISABLED and user_symptoms != []:
         btn_no_symptoms["state"] = tk.NORMAL
 
