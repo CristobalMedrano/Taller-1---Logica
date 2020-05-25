@@ -26,20 +26,13 @@ pip install pyswip
 ## Uso
 Para utilizar este programa, simplemente debe ejecutar el archivo "Grupo1.py", que se encuentra en el mismo directorio que el archivo "README.md". Luego debe seguir las intrucciones que se le indican por pantalla.
 
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Logic Doctor App - Inicio](https://i.imgur.com/qTRgi0d.png)
 
 Una vez ingresado el nombre y haberle dado click a comenzar, se le preguntará que sintomas presenta.
-
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
-
-Debe darle click a algún sintoma y este será recordado por el programa.
-
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
-
+Darle click a algún sintoma y este será recordado por el programa.
 Debe ir seleccionando los sintomas que presenta y a continuación el programa contrarestará los sintomas ingresados con nuestra base de conocimientos, entregandole una aproximación a la patología que presenta.
-
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Logic Doctor App](https://media.giphy.com/media/cPMgpFITHP3K1q04sS/giphy.gif)
 
 
 ## Licencia
-Copyright (C) 2020 - Lógica y Teoría de la computación
+Copyright (C) 2020 - Lógica y Teoría de la computación - Grupo 1
