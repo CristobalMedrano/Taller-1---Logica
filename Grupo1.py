@@ -284,10 +284,6 @@ def update_lbl_current_symptoms(symptom):
     global lbl_current_symptoms
     lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+ "\n" + symptom.capitalize() + "\n"
 
-def update_lbl_current_symptoms(symptom):
-    global lbl_current_symptoms
-    lbl_current_symptoms["text"] = lbl_current_symptoms["text"]+ "\n" + symptom.capitalize() + "\n"
-
 def update_btn_symptoms():
     print(diseases_by_symptoms(user_symptoms))
     i = 0
