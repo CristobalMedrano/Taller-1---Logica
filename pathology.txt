@@ -72,7 +72,7 @@ candidosis vaginal _ secrecion vaginal espesa, blanca y sin olor
 candidosis vaginal _ sensacion de ardor, especialmente durante las relaciones sexuales o al orinar
 celiaquia _ diarrea
 celiaquia _ dolor abdominal
-celiaquia _ estreñimiento
+celiaquia _ estrenimiento
 celiaquia _ fatiga
 celiaquia _ gases
 celiaquia _ hinchazon
@@ -87,7 +87,7 @@ colitis ulserosa _ fatiga
 colitis ulserosa _ fiebre
 colitis ulserosa _ incapacidad para defecar a pesar de la urgencia
 colitis ulserosa _ necesidad urgente de defecar
-colitis ulserosa _ problemas de crecimiento en niños
+colitis ulserosa _ problemas de crecimiento en ninos
 colitis ulserosa _ sangrado rectal
 covid-19 _ cansancio
 covid-19 _ diarrea
@@ -103,7 +103,7 @@ dermatitis atopica _ picazon
 dermatitis atopica _ piel en carne viva, sensible e inflamada por rascarse
 dermatitis atopica _ piel engrosada, agrietada, escamosa
 dermatitis atopica _ piel seca
-dermatitis atopica _ pequeños bultos, que pueden perder liquido y cubrirse con una costra al rascarse
+dermatitis atopica _ pequenos bultos, que pueden perder liquido y cubrirse con una costra al rascarse
 difteria _ dificultad para respirar
 difteria _ fiebre
 difteria _ ronquedad
@@ -125,7 +125,7 @@ enfermedad de addison _ perdida de peso
 enfermedad de addison _ perdida del apetito
 enfermedad de addison _ presion arterial baja
 enfermedad de addison _ vomitos
-enfisema pulmonar _ coloracion azul en uñas y labios
+enfisema pulmonar _ coloracion azul en unas y labios
 enfisema pulmonar _ dificultad para respirar
 faringitis _ dolor en el pecho
 faringitis _ fatiga
@@ -147,7 +147,7 @@ herpes genital _ ampollas
 herpes genital _ costras en la piel
 herpes genital _ dolor
 herpes genital _ picazon
-herpes genital _ protuberancias rojas pequeñas
+herpes genital _ protuberancias rojas pequenas
 herpes genital _ ulceras
 herpes labial _ ampollas
 herpes labial _ costras
@@ -160,7 +160,7 @@ herpes labial _ ganglios linfaticos inflamados
 herpes labial _ hormigueo
 herpes labial _ picazon
 herpes labial _ supuracion
-hipertension pulmonar _ coloracion azul en uñas y labios
+hipertension pulmonar _ coloracion azul en unas y labios
 hipertension pulmonar _ desmayos
 hipertension pulmonar _ dificultad para respirar
 hipertension pulmonar _ dolor en el pecho
@@ -179,7 +179,6 @@ insuficiencia cardiaca _ aumento de peso muy rapido por retencion de liquido
 insuficiencia cardiaca _ dificultad para concentrarse o menor estado de alerta
 insuficiencia cardiaca _ dolor en el pecho
 insuficiencia cardiaca _ falta de aire
-insuficiencia cardiaca _ falta de aire
 insuficiencia cardiaca _ falta de apetito
 insuficiencia cardiaca _ fatiga y debilidad
 insuficiencia cardiaca _ hinchazon del abdomen
@@ -190,7 +189,7 @@ insuficiencia cardiaca _ menor capacidad para hacer ejercicio
 insuficiencia cardiaca _ nauseas
 insuficiencia cardiaca _ sibilancia constantes con flema blanca o rosa manchada de sangre
 insuficiencia cardiaca _ tos
-lupus _ dedos de los pies y de las manos que se vuelven blancos o azules cuando se exponen al frio o durante situaciones de estres
+lupus _ coloracion azul en unas y labios
 lupus _ desorientacion
 lupus _ dolor articular
 lupus _ dolor de cabeza
@@ -210,8 +209,8 @@ malformacion arteriovenosa _ sangrado
 malformacion arteriovenosa _ convulsiones
 malformacion arteriovenosa _ vomitos
 narcolepsia _ alucinaciones
-narcolepsia _ cambios en el ciclo de sueño con movimiento rapido de ojos (rem)
-narcolepsia _ paralisis del sueño
+narcolepsia _ cambios en el ciclo de sueno con movimiento rapido de ojos (rem)
+narcolepsia _ paralisis del sueno
 narcolepsia _ perdida repentina del tono muscular
 narcolepsia _ somnolencia excesiva durante el dia
 neumonia _ dolor en el pecho
@@ -224,10 +223,10 @@ psoriasis _ ardor
 psoriasis _ articulaciones inflamadas y rigidas
 psoriasis _ dolor
 psoriasis _ manchas rojas en la piel cubiertas con escamas gruesas y plateadas
-psoriasis _ pequeños puntos escamados
+psoriasis _ pequenos puntos escamados
 psoriasis _ picazon
 psoriasis _ piel seca
-psoriasis _ uñas engrosadas, picadas o acanaladas
+psoriasis _ unas engrosadas, picadas o acanaladas
 rinitis _ congestion nasal
 rinitis _ estornudos
 rinitis _ mucosidad
@@ -262,7 +261,7 @@ sindrome coronario agudo _ vomitos
 soplos cardiacos _ agrandamiento de las venas del cuello
 soplos cardiacos _ agrandamiento del higado
 soplos cardiacos _ aumento de peso repentino
-soplos cardiacos _ coloracion azul en uñas y labios.
+soplos cardiacos _ coloracion azul en unas y labios.
 soplos cardiacos _ dolor en el pecho
 soplos cardiacos _ falta de aire
 soplos cardiacos _ mareos
@@ -275,7 +274,7 @@ tosferina _ mucosidad
 tosferina _ ojos llorosos
 tosferina _ tos
 urticaria _ ronchas grandes
-urticaria _ ronchas pequeñas
+urticaria _ ronchas pequenas
 urticaria _ ronchas redondas, ovaladas o en forma de gusano
 urticaria _ ronchas rojizas
 urticaria _ una comezon de leve a intensa
