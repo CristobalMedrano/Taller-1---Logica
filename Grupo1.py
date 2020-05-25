@@ -345,7 +345,7 @@ def start_program(init_top_symptoms, top):
     if(text_name.get() != ""):
         global btn_top_symptoms_list, lbl_init_symptoms, lbl_current_symptoms, lbl_possible_disease, window, main_window, user_frame_disease, user_top_symptoms, btn_no_symptoms
         name_user = text_name.get()
-        window = tk.Tk(className='Taller 1 - Dr LPO')
+        window = tk.Tk(className='Logic Doctor App por Grupo 1')
 
         main_window.destroy()
         window.configure(bg="white")
@@ -456,7 +456,7 @@ def main():
 
         name_user = ""
 
-        main_window.title("LogicDoctor")
+        main_window.title("Logic Doctor App por Grupo 1")
         main_window.geometry("800x600")
         main_window.resizable(width=False, height=False)
         photo= tk.PhotoImage(file="fondo.png")
@@ -468,11 +468,11 @@ def main():
         label_description = tk.Label(text="Hola, soy un sistema de asesoramiento que simula un\n diagnostico medico, para esto\n necesito que selecciones\n los sintomas que presenta el paciente \npara determinar la posible afección médica.", font=("Arial", 14), bg="#fcfbfb")
         label_description.place(x=320, y=80)
 
-        label_information = tk.Label(text="INFORMACION IMPORTANTE: \nLogic Doctor App NO RECOMIENDA SU USO PARA \nFINES PROFESIONALES, esta App se creó\n con fines estudiantiles y en ningún caso deben\n tomarse en cuenta los resultados obtenidos aquí.", font=("Arial", 14), bg="#fcfbfb")
+        label_information = tk.Label(text="INFORMACIÓN IMPORTANTE: \nLogic Doctor App NO RECOMIENDA SU USO PARA \nFINES PROFESIONALES, esta App se creó\n con fines estudiantiles y en ningún caso deben\n tomarse en cuenta los resultados obtenidos aquí.", font=("Arial", 14), bg="#fcfbfb")
         label_information.place(x=320, y=220)
 
-        label_collaborators = tk.Label(text="Desarrollado por: \n - Jorge Ayala\n - Felipe Gonzalez\n - Cristobal Medrano\n - Javier Perez", font=("Arial", 14), bg="#fefefe")
-        label_collaborators.place(x=30, y=460)
+        label_collaborators = tk.Label(text="Grupo 1.\nDesarrollado por: \n - Jorge Ayala\n - Felipe Gonzalez\n - Cristobal Medrano\n - Javier Perez", font=("Arial", 14), bg="#fefefe")
+        label_collaborators.place(x=30, y=450)
 
         label_collaborators = tk.Label(text="Para continuar, ingrese el nombre del paciente.", font=("Arial", 14), bg="#fcfcfc")
         label_collaborators.place(x=350, y=500)
